@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI的雙重思維：生成式 vs. 判別式</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues & Ochre -->
+    <!-- Application Structure Plan: 本資訊圖表採用垂直滾動的敘事流程，共分為五個區塊：(1)介紹：以醒目的標題吸引注意力。(2)核心概念：並排卡片設計，直觀對比兩種AI的定義與邏輯。(3)能力比較：使用雷達圖，將抽象的能力差異數據化、視覺化。(4)真實應用：透過網格佈局展示具體案例，將理論與實踐連結。(5)協同工作：以流程圖呈現混合應用，總結兩者如何互補。此結構由淺入深，符合學習認知規律，旨在引導使用者清晰地理解一個複雜的技術主題。 -->
+    <!-- Visualization & Content Choices: 1. 核心概念流程 -> 目標: 組織 -> 視覺化: HTML/CSS流程圖 -> 理由: 使用簡單的方塊和箭頭，清晰地展示輸入-處理-輸出的邏輯，輕量且易於理解。 2. 能力維度比較 -> 目標: 比較 -> 視覺化: 雷達圖 (Chart.js/Canvas) -> 理由: 雷達圖非常適合在多個共同維度上比較兩個或多個主體，能一眼看出兩者能力的形狀與強弱項。 3. 混合應用流程 -> 目標: 組織 -> 視覺化: HTML/CSS流程圖 -> 理由: 同樣使用原生網頁技術，將一個較複雜的協作流程（診斷+生成）分解為清晰的步驟，幫助使用者理解其工作原理。以上選擇均未使用SVG或Mermaid JS。 -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F8F9FA;
+            color: #343A40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .flow-box {
+            border: 2px solid;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .arrow {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6C757D;
+            margin: 0 1rem;
+            align-self: center;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-center items-center">
+            <h1 class="text-2xl font-bold text-[#0077B6]">AI的雙重思維：生成式 vs. 判別式</h1>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="intro" class="text-center py-16">
+            <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-[#003049] leading-tight">探索AI的兩種心智</h2>
+            <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-700">
+                人工智慧並非鐵板一塊，它主要透過兩種截然不同的模式思考：一種是天馬行空的「創作者」，另一種則是明察秋毫的「裁判」。理解這兩種AI的差異，是掌握未來科技的關鍵。
+            </p>
+        </section>
+
+        <section id="concepts" class="py-12">
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-[#F7B801]">
+                    <h3 class="text-3xl font-bold text-center mb-6">生成式 AI <span class="text-lg font-normal text-gray-500">(Generative)</span></h3>
+                    <p class="text-gray-600 mb-8 text-center h-24">如同藝術家或發明家，學習數據中的潛在模式與結構，從而「創造」出全新的、原創的內容。</p>
+                    <div class="flex items-center justify-center w-full">
+                        <div class="flow-box border-[#FBEA7A] bg-[#FBEA7A]/30">文字提示</div>
+                        <div class="arrow text-[#F7B801]">→</div>
+                        <div class="flow-box border-[#F7B801] bg-[#F7B801]/30">創造新內容</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-[#0077B6]">
+                    <h3 class="text-3xl font-bold text-center mb-6">判別式 AI <span class="text-lg font-normal text-gray-500">(Discriminative)</span></h3>
+                    <p class="text-gray-600 mb-8 text-center h-24">如同法官或檢驗員，專注於學習不同類別數據之間的界線與差異，以便對新數據進行「判斷」與分類。</p>
+                    <div class="flex items-center justify-center w-full">
+                        <div class="flow-box border-[#90E0EF] bg-[#90E0EF]/30">電子郵件</div>
+                        <div class="arrow text-[#0077B6]">→</div>
+                        <div class="flow-box border-[#0077B6] bg-[#0077B6]/30">判斷類別</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="py-16 mt-12 bg-gray-100 rounded-xl">
+            <div class="text-center mb-12 px-4">
+                <h2 class="text-3xl font-bold">能力維度比較</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">若將兩種AI的能力視覺化，它們的「形狀」截然不同。生成式AI在創造力上無與倫比，而判別式AI則在特定任務的準確性上更勝一籌。</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="aiRadarChart"></canvas>
+            </div>
+        </section>
+        
+        <section id="applications" class="py-16 mt-12">
+             <div class="text-center mb-12 px-4">
+                <h2 class="text-3xl font-bold">真實世界的應用</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">從每天收發的郵件到最新的AI繪圖工具，這兩種思維模式早已深入我們的數位生活。</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-4">✍️</p>
+                    <h4 class="font-bold text-lg text-[#F7B801]">內容生成</h4>
+                    <p class="text-sm text-gray-600 mt-2">撰寫文章、詩歌、程式碼，甚至製作個人化故事書 (如 Storybook)。</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-4">🖼️</p>
+                    <h4 class="font-bold text-lg text-[#F7B801]">圖像創作</h4>
+                    <p class="text-sm text-gray-600 mt-2">根據文字描述 (Prompt) 產生獨一無二的圖片 (如 Gemini Nano Banana)。</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-4">🛡️</p>
+                    <h4 class="font-bold text-lg text-[#0077B6]">垃圾郵件過濾</h4>
+                    <p class="text-sm text-gray-600 mt-2">分析郵件特徵，精準判斷其是否為垃圾郵件並自動歸類。</p>
+                </div>
+                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <p class="text-4xl mb-4">🚗</p>
+                    <h4 class="font-bold text-lg text-[#0077B6]">決策判斷</h4>
+                    <p class="text-sm text-gray-600 mt-2">在遊戲或模擬中 (如 PAIA Maze Car)，根據感測器數據判斷下一步行動。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="hybrid" class="py-16 mt-12 bg-gray-100 rounded-xl">
+            <div class="text-center mb-12 px-4">
+                <h2 class="text-3xl font-bold">協同工作：1 + 1 > 2</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-gray-600">在最先進的應用中，兩種AI時常強強聯手。判別式AI負責「診斷問題」，生成式AI則基於診斷結果「提供客製化解決方案」，實現了更智慧的輔助系統。</p>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+                 <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="font-semibold mb-2">學生提交答案</div>
+                        <div class="flow-box border-gray-400 bg-gray-50">「光合作用是植物...呼吸？」</div>
+                    </div>
+                    <div class="arrow rotate-90 md:rotate-0">↓</div>
+                    <div class="flex flex-col items-center">
+                        <div class="font-semibold mb-2 text-[#0077B6]">判別式AI進行診斷</div>
+                        <div class="flow-box border-[#0077B6] bg-[#90E0EF]/30">判定：概念混淆</div>
+                    </div>
+                    <div class="arrow rotate-90 md:rotate-0">↓</div>
+                    <div class="flex flex-col items-center">
+                        <div class="font-semibold mb-2 text-[#F7B801]">生成式AI提供回饋</div>
+                        <div class="flow-box border-[#F7B801] bg-[#FBEA7A]/30 w-52">生成個人化比喻來解釋差異</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t mt-16">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+            <p class="text-sm">Infographic SPA | 內容基於「AI的雙重思維」講座材料</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const radarCtx = document.getElementById('aiRadarChart').getContext('2d');
+            const aiRadarChart = new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['創造力', ['資料需求量', '(訓練)'], '任務導向性', '可解釋性', '計算成本', ['準確性', '(分類任務)']],
+                    datasets: [{
+                        label: '生成式 AI',
+                        data: [9, 9, 5, 3, 9, 6],
+                        backgroundColor: 'rgba(247, 184, 1, 0.2)',
+                        borderColor: 'rgba(247, 184, 1, 1)',
+                        pointBackgroundColor: 'rgba(247, 184, 1, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(247, 184, 1, 1)'
+                    }, {
+                        label: '判別式 AI',
+                        data: [2, 7, 9, 7, 6, 9],
+                        backgroundColor: 'rgba(0, 119, 182, 0.2)',
+                        borderColor: 'rgba(0, 119, 182, 1)',
+                        pointBackgroundColor: 'rgba(0, 119, 182, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(0, 119, 182, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#DEE2E6' },
+                            grid: { color: '#DEE2E6' },
+                            pointLabels: {
+                                font: { size: 14, family: "'Noto Sans TC', sans-serif" },
+                                color: '#495057'
+                            },
+                            ticks: {
+                                backdropColor: '#F8F9FA',
+                                color: '#6C757D',
+                                stepSize: 2,
+                            },
+                            min: 0,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { size: 14, family: "'Noto Sans TC', sans-serif" }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    } else {
+                                      return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
 
